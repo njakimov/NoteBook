@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".NoteDetailsFragment"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/theme"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Темаcvncvbncvbncvbn 1"
+            android:textAlignment="center"
+            style="@style/NodeTheme"
+    />
+    <TextView
+            android:id="@+id/dateCreate"
+            android:layout_width="match_parent"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="16.03.2021 12:21:54"
+            style="@style/NodeDateTime"
+    />
+    <TextView
+            android:id="@+id/dateChange"
+            android:layout_width="match_parent"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="16.03.2021 12:21:54"
+
+            style="@style/NodeDateTime"
+    />
+
+</LinearLayout>
