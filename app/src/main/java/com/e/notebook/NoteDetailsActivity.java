@@ -22,9 +22,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
             // Если эта activity запускается первый раз (с каждым новым гербом первый раз),
             // то перенаправим параметр фрагменту
             NoteDetailsFragment details = new NoteDetailsFragment();
-            Bundle bund = getIntent().getExtras();
-            Integer idNode = bund.getInt(NoteDetailsFragment.ID_NOTE);
-            details.setArguments(bund);
+            details.setArguments(getIntent().getExtras());
 
             // Добавим фрагмент на activity
             getSupportFragmentManager()
@@ -33,4 +31,5 @@ public class NoteDetailsActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
 }

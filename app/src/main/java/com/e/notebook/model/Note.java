@@ -10,8 +10,9 @@ public class Note {
     private Integer mId = 0;                                                                                            // ключ заметки
     private String mTheme;                                                                                              // тема заметки / название
     private String mDescription;                                                                                        // описание заметки
-    private Date mDateCreate;                                                                                           // дата создания заметки
+    private final Date mDateCreate;                                                                                     // дата создания заметки
     private Date mDateChange;                                                                                           // дата изменения заметки
+    private Date mDateAlarm;                                                                                            // дата напоминания
 
     public Note(Integer uniqIdNote, String theme, String description) {
         this.mTheme = theme;
@@ -55,6 +56,14 @@ public class Note {
         this.mTheme = theme;
         this.mDescription = description;
         this.mDateChange = new Date();
+    }
+
+    public Date getDateAlarm() {
+        return mDateAlarm;
+    }
+
+    public void setDateAlarm(Date mDateAlarm) {
+        this.mDateAlarm = mDateAlarm;
     }
 
 }

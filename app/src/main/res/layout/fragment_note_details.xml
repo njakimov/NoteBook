@@ -27,8 +27,14 @@
             android:layout_width="match_parent"
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="16.03.2021 12:21:54"
-
             style="@style/NodeDateTime"
     />
-
+    <TextView
+            android:id="@+id/dateAlarm"
+            android:layout_width="match_parent"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="16.03.2021 12:21:54"
+            style="@style/NodeDateTime"
+            android:background="@drawable/edit_text_style"
+    />
 </LinearLayout>
