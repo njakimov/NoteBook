@@ -8,14 +8,14 @@ import java.util.Map;
 public class ListNote {
     private static ListNote instance;
 
-    private static Integer uniqIdNote = -1;                                                                              // уникальный ключ заметк
+    private static Integer uniqIdNote = -1;                                                                             // уникальный ключ заметк
     private HashMap<Integer, Note> mListNote;                                                                           // список заметок
 
     public static ListNote getInstance(){ // #3
-        if(instance == null){		//если объект еще не создан
-            instance = new ListNote();	//создать новый объект
+        if(instance == null){		                                                                                    // если объект еще не создан
+            instance = new ListNote();	                                                                                // создать новый объект
         }
-        return instance;		// вернуть ранее созданный объект
+        return instance;		                                                                                        // вернуть ранее созданный объект
     }
 
     private ListNote() {
@@ -27,9 +27,10 @@ public class ListNote {
      *
      * @param description - описание заметки
      */
-    public void addNote(String theme, String description) {
+    public Integer addNote(String theme, String description) {
         uniqIdNote++;
         mListNote.put(uniqIdNote, new Note(uniqIdNote, theme, description));
+        return uniqIdNote;
     }
 
     /**
