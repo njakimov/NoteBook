@@ -1,11 +1,6 @@
 package com.e.notebook;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,7 +85,7 @@ public class NoteDetailsFragment extends Fragment {
             // Добавим фрагмент на activity
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.nodeDetailsContainer, dataPickerFragment)
+                    .replace(R.id.noteDetailsContainer, dataPickerFragment)
                     .commit();
         });
     }

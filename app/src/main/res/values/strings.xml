@@ -3,4 +3,26 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="txtBtnDataPickerDone">Установить дату</string>
+    <string name="menu_add">Добавить</string>
+    <string name="menu_clear">Очистить</string>
+    <string name="favorite">Избранное</string>
+    <string name="main">Главная</string>
+    <string name="settings">Настройки</string>
+    <string name="search">Поиск</string>
+    <string name="back">Назад</string>
+    <string name="add">Добавить</string>
+    <string name="edit">Изменить</string>
+    <string name="favorite_screen">Избранное</string>
+    <string name="use_backstack">Использовать Бэкстек</string>
+    <string name="new_fragment">Новый фрагмент</string>
+    <string name="replace">Заменить</string>
+    <string name="back_as_remove_fragment">Назад через удаление фрагмента</string>
+    <string name="delete_before_add">Удалить перед добавлением</string>
+    <string name="main_screen">Записки</string>
+    <string name="item1">item 1</string>
+    <string name="item2">item 2</string>
+    <string name="new_menu_item_added">Menu item added</string>
+    <string name="navigation_drawer_open">Открыть меню</string>
+    <string name="navigation_drawer_close">Закрыть меню</string>
+    <string name="fragment_navigation">Меню</string>
 </resources>

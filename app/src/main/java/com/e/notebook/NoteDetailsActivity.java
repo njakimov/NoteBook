@@ -27,7 +27,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
             // Добавим фрагмент на activity
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.nodeDetailsContainer, details)
+                    .replace(R.id.noteDetailsContainer, details)
                     .commit();
         }
     }

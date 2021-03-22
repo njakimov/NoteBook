@@ -1,7 +1,12 @@
 package com.e.notebook;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +25,7 @@ public class NotesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private int mColumnCount = 1;
+    private NotesRecyclerViewAdapter resAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,10 +54,14 @@ public class NotesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.node_list, container, false);
-
         ListNote notes = ListNote.getInstance();
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -62,9 +72,11 @@ public class NotesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new NotesRecyclerViewAdapter(notes.toListNode(), this));
+            resAdapter = new NotesRecyclerViewAdapter(notes.toListNode(), this);
+            recyclerView.setAdapter(resAdapter);
         }
         return view;
     }
+
 
 }

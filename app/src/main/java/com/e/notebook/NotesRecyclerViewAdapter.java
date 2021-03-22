@@ -1,8 +1,12 @@
 package com.e.notebook;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.view.Menu;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.e.notebook.model.ListNote;
 import com.e.notebook.model.Note;
 
 import java.util.List;
@@ -23,6 +28,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     private ViewGroup parent;
     private Fragment parentFragment;
     private boolean isLandscape;
+    private int currentIdNote = -1;
 
     public NotesRecyclerViewAdapter(List<Note> items, Fragment parentFragment) {
         mValues = items;
@@ -34,7 +40,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.node, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note, parent, false);
 
         isLandscape = parent.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 
@@ -50,11 +56,11 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
         final Integer idNote = mValues.get(position).getId();
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showNoteDetails(idNote);
-            }
+        holder.mView.setOnClickListener(v -> showNoteDetails(idNote));
+
+        holder.mView.setOnLongClickListener(v -> {
+            openPopupMenu(v, idNote);
+            return true;
         });
     }
 
@@ -67,28 +73,24 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     }
 
     private void showPortNoteDetails(Integer idNote) {
-// Откроем вторую activity
-        Intent intent = new Intent();
+        Intent intent = new Intent();                                                                                   // Откроем вторую activity
         intent.setClass(parent.getContext(), NoteDetailsActivity.class);
-// и передадим туда параметры
-        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);
+        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);                                                           // и передадим туда параметры
         parentFragment.startActivity(intent);
     }
 
     private void showLandNoteDetails(Integer idNote) {
-// Откроем вторую activity
         Intent intent = new Intent();
-        intent.setClass(parent.getContext(), NoteDetailsActivity.class);
-// и передадим туда параметры
-        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);
+
+        intent.setClass(parent.getContext(), NoteDetailsActivity.class);                                                // Откроем вторую activity
+        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);                                                           // и передадим туда параметры
         parentFragment.startActivity(intent);
 
         NoteDetailsFragment detail = NoteDetailsFragment.newInstance(idNote);
-// Выполняем транзакцию по замене фрагмента
-        FragmentManager fragmentManager = parentFragment.requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction =
-                fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nodeDetailsContainer, detail); // замена фрагмента
+
+        FragmentManager fragmentManager = parentFragment.requireActivity().getSupportFragmentManager();                 // Выполняем транзакцию по замене фрагмента
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.noteDetailsContainer, detail);                                                 // замена фрагмента
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
     }
@@ -110,6 +112,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
             mTheme = (TextView) view.findViewById(R.id.theme);
             mDataCreate = (TextView) view.findViewById(R.id.dateCreate);
             mDataChange = (TextView) view.findViewById(R.id.dateChange);
+
         }
 
         @NonNull
@@ -118,4 +121,34 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
             return super.toString() + " '" + mTheme.getText() + "'";
         }
     }
+
+    private void openPopupMenu(View view, Integer idNote) {
+        currentIdNote = idNote;
+        TextView text = view.findViewById(R.id.theme);
+
+        Activity activity = parentFragment.getActivity();
+        PopupMenu popupMenu = new PopupMenu(activity, view);
+        activity.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
+        Menu menu = popupMenu.getMenu();
+//            menu.findItem(R.id.item2_popup).setVisible(false);
+        menu.add(0, 1, 10, R.string.add);
+        menu.add(0, 2, 12, R.string.edit);
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            switch (id) {
+                case 1:
+                    Toast.makeText(parentFragment.getContext(), "Добавить", Toast.LENGTH_SHORT).show();
+                    showNoteDetails(ListNote.getInstance().addNote("",""));
+                    return true;
+                case 2:
+                    Toast.makeText(parentFragment.getContext(), "Изменить", Toast.LENGTH_SHORT).show();
+                    showNoteDetails(currentIdNote);
+                    return true;
+            }
+            return true;
+        });
+        popupMenu.show();
+    }
+
+
 }

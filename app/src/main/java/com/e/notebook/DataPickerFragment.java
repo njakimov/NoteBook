@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import com.e.notebook.model.ListNote;
 import com.e.notebook.model.Note;
 
-import java.util.Date;
-
 import static com.e.notebook.service.Common.formatStringToDate;
 
 /**
@@ -89,7 +87,7 @@ public class DataPickerFragment extends Fragment {
             // Добавим фрагмент на activity
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.nodeDetailsContainer, details)
+                    .replace(R.id.noteDetailsContainer, details)
                     .commit();
         });
     }
