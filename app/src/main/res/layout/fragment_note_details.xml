@@ -1,40 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context=".NoteDetailsFragment"
-              android:orientation="vertical">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                       xmlns:tools="http://schemas.android.com/tools"
+                                       android:layout_height="match_parent" android:layout_width="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  tools:context=".NoteDetailsFragment"
+                  android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0px"
+                    android:layout_weight="40"
+                    android:layout_height="45dp"
+            >
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:id="@+id/theme"
+                        android:hint="@string/hint_note"
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                    android:src="@android:drawable/btn_star"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgFavoriteState"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/Избранное"/>
+        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_weight="40"
+                android:layout_height="245dp"
+        >
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="245dp"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:id="@+id/description"
+                    android:hint="@string/hintDescription"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView
 
-    <TextView
-            android:id="@+id/theme"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="Темаcvncvbncvbncvbn 1"
-            android:textAlignment="center"
-            style="@style/NodeTheme"
-    />
-    <TextView
-            android:id="@+id/dateCreate"
-            android:layout_width="match_parent"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="16.03.2021 12:21:54"
-            style="@style/NodeDateTime"
-    />
-    <TextView
-            android:id="@+id/dateChange"
-            android:layout_width="match_parent"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="16.03.2021 12:21:54"
-            style="@style/NodeDateTime"
-    />
-    <TextView
-            android:id="@+id/dateAlarm"
-            android:layout_width="match_parent"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="16.03.2021 12:21:54"
-            style="@style/NodeDateTime"
-            android:background="@drawable/edit_text_style"
-    />
-</LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/lblAlarm"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+            <TextView
+                    android:id="@+id/dateAlarm"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="16.03.2021 12:21:54"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/lblCreate"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+            <TextView
+                    android:id="@+id/dateCreate"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="16.03.2021 12:21:54"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:text="@string/lblChange"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+            <TextView
+                    android:id="@+id/dateChange"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="16.03.2021 12:21:54"
+                    style="@style/NodeDateTime"
+                    android:background="@drawable/edit_text_style"
+            />
+        </LinearLayout>
+        <Button
+                android:text="@string/btnSaveNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/btnSaveNote"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

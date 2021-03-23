@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NoteBook</string>
+    <string name="app_name">Заметки</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="txtBtnDataPickerDone">Установить дату</string>
@@ -7,11 +7,13 @@
     <string name="menu_clear">Очистить</string>
     <string name="favorite">Избранное</string>
     <string name="main">Главная</string>
+    <string name="addNote">Добавить заметку</string>
     <string name="settings">Настройки</string>
     <string name="search">Поиск</string>
     <string name="back">Назад</string>
     <string name="add">Добавить</string>
     <string name="edit">Изменить</string>
+    <string name="remove">Удалить</string>
     <string name="favorite_screen">Избранное</string>
     <string name="use_backstack">Использовать Бэкстек</string>
     <string name="new_fragment">Новый фрагмент</string>
@@ -25,4 +27,11 @@
     <string name="navigation_drawer_open">Открыть меню</string>
     <string name="navigation_drawer_close">Закрыть меню</string>
     <string name="fragment_navigation">Меню</string>
+    <string name="hint_note">Тема заметку</string>
+    <string name="btnSaveNote">Сохранить заметки</string>
+    <string name="lblAlarm">Напомнить:</string>
+    <string name="lblCreate">Создана:</string>
+    <string name="lblChange">Изменена:</string>
+    <string name="Избранное">btnFavorite</string>
+    <string name="hintDescription">Описание заметки</string>
 </resources>

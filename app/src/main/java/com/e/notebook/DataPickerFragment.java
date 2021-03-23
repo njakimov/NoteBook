@@ -3,6 +3,7 @@ package com.e.notebook;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import com.e.notebook.model.ListNote;
 import com.e.notebook.model.Note;
 
+import static com.e.notebook.NoteDetailsFragment.CHOSEN_DATE;
+import static com.e.notebook.NoteDetailsFragment.CHOSEN_FIELD_NAME;
+import static com.e.notebook.service.Common.formatDateString;
 import static com.e.notebook.service.Common.formatStringToDate;
 
 /**
@@ -31,6 +35,7 @@ public class DataPickerFragment extends Fragment {
     private String fieldName;
 
     DatePicker mDatePicker;
+    TimePicker mTimePicker;
 
     public static final String ID_NOTE = "idNote";
     private Integer idNote;
@@ -73,16 +78,16 @@ public class DataPickerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mDatePicker = view.findViewById(R.id.datePicker);
+        mTimePicker = view.findViewById(R.id.timePicker);
+
+
         Button btnDataPicker = view.findViewById(R.id.btnDataPickerDone);
         btnDataPicker.setOnClickListener((View v) -> {
-            Note note = ListNote.getInstance().getNote(id);
-            if (fieldName.equals("mDataAlarm")) {
-                note.setDateAlarm(formatStringToDate(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth()));
-            }
-
             NoteDetailsFragment details = new NoteDetailsFragment();
             Bundle args = new Bundle();
             args.putInt(ID_NOTE, id);
+            args.putString(CHOSEN_FIELD_NAME, fieldName);
+            args.putString(CHOSEN_DATE, formatDateString(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth(), mTimePicker.getHour(), mTimePicker.getMinute()));
             details.setArguments(args);
             // Добавим фрагмент на activity
             getActivity().getSupportFragmentManager()

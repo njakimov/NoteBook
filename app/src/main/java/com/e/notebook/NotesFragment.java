@@ -1,12 +1,12 @@
 package com.e.notebook;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Menu;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import androidx.appcompat.widget.PopupMenu;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.e.notebook.model.ListNote;
+
+import static com.e.notebook.DataPickerFragment.FILED_NAME;
+import static com.e.notebook.DataPickerFragment._ID;
 
 /**
  * A fragment representing a list of Items.
@@ -61,7 +64,7 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.node_list, container, false);
+        View view = inflater.inflate(R.layout.note_list, container, false);
         ListNote notes = ListNote.getInstance();
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -75,8 +78,13 @@ public class NotesFragment extends Fragment {
             resAdapter = new NotesRecyclerViewAdapter(notes.toListNode(), this);
             recyclerView.setAdapter(resAdapter);
         }
+
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+    }
 }

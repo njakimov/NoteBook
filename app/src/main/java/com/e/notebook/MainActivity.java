@@ -1,6 +1,8 @@
 package com.e.notebook;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -39,10 +41,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private ListNote notes;                                                                                             // текущий список заметок
+    private boolean isLandscape;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         initNote();
         setContentView(R.layout.activity_main);
         readSettings();
@@ -70,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
         initButtonFavorite();
         initButtonSettings();
         initButtonBack();
+        initTopMenu();
+    }
+
+    private void initTopMenu() {
+//        FrameLayout noteDetails = findViewById(R.id.noteDetailsContainer);
+//        if(noteDetails!=null) {
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT, weight);
+//            noteDetails.setLayoutParams(params);
+//        }
     }
 
     private Toolbar initToolbar() {
@@ -97,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_main:
                 addFragment(new NotesFragment());
                 setWeightFragmentNoteDetails(1f);
+                Toast.makeText(getApplicationContext(), "Добавить заметку", Toast.LENGTH_SHORT).show();
+                showNoteDetails(0);
                 return true;
             case R.id.action_favorite:
                 addFragment(new FavoriteFragment());
@@ -116,16 +131,13 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);                                                    // Обработка навигационного меню
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (navigateFragment(id)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                    return true;
-                }
-                return false;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (navigateFragment(id)) {
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
             }
+            return false;
         });
     }
 
@@ -142,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setWeightFragmentNoteDetails(float weight) {
         FrameLayout noteDetails = findViewById(R.id.noteDetailsContainer);
-        if(noteDetails!=null) {
+        if (noteDetails != null) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT, weight);
             noteDetails.setLayoutParams(params);
         }
@@ -171,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();                                                                                   // Закрыть транзакцию
     }
 
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 // Здесь определяем меню приложения (активити)
@@ -182,12 +197,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
+                if(findViewById(R.id.list)!=null) {
+                    addFragment(new NotesFragment());
+                } else if(findViewById(R.id.listFavorite)!=null) {
+                        addFragment(new FavoriteFragment());
+                }
                 return true;
             }
 
             // реагирует на нажатие каждой клавиши
             @Override
             public boolean onQueryTextChange(String newText) {
+                notes.setTxtSearch(newText);
                 return true;
             }
         });
@@ -245,5 +266,36 @@ public class MainActivity extends AppCompatActivity {
         Settings.isAddFragment = sharedPref.getBoolean(Settings.IS_ADD_FRAGMENT_USED, true);
         Settings.isBackAsRemove = sharedPref.getBoolean(Settings.IS_BACK_AS_REMOVE_FRAGMENT, true);
         Settings.isDeleteBeforeAdd = sharedPref.getBoolean(Settings.IS_DELETE_FRAGMENT_BEFORE_ADD, false);
+    }
+
+    private void showNoteDetails(Integer idNote) {
+        if (isLandscape) {
+            showLandNoteDetails(idNote);
+        } else {
+            showPortNoteDetails(idNote);
+        }
+    }
+
+    private void showPortNoteDetails(Integer idNote) {
+        Intent intent = new Intent();                                                                                   // Откроем вторую activity
+        intent.setClass(getApplicationContext(), NoteDetailsActivity.class);
+        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);                                                           // и передадим туда параметры
+        startActivity(intent);
+    }
+
+    private void showLandNoteDetails(Integer idNote) {
+        Intent intent = new Intent();
+
+        intent.setClass(getApplicationContext(), NoteDetailsActivity.class);                                                // Откроем вторую activity
+        intent.putExtra(NoteDetailsFragment.ID_NOTE, idNote);                                                           // и передадим туда параметры
+        startActivity(intent);
+
+        NoteDetailsFragment detail = NoteDetailsFragment.newInstance(idNote);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();                                                  // Выполняем транзакцию по замене фрагмента
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.noteDetailsContainer, detail);                                                 // замена фрагмента
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
     }
 }
