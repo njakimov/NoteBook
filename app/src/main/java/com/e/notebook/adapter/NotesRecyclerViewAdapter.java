@@ -1,4 +1,4 @@
-package com.e.notebook;
+package com.e.notebook.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.e.notebook.NoteDetailsActivity;
+import com.e.notebook.fragment.NoteDetailsFragment;
+import com.e.notebook.R;
 import com.e.notebook.model.ListNote;
 import com.e.notebook.model.Note;
 

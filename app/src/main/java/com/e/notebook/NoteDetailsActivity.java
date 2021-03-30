@@ -1,9 +1,9 @@
 package com.e.notebook;
 
 import android.content.res.Configuration;
-import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.e.notebook.fragment.NoteDetailsFragment;
 
 public class NoteDetailsActivity extends AppCompatActivity {
 

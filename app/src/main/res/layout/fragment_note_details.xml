@@ -5,7 +5,7 @@
                                        android:layout_height="match_parent" android:layout_width="match_parent">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  tools:context=".NoteDetailsFragment"
+                  tools:context=".fragment.NoteDetailsFragment"
                   android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"

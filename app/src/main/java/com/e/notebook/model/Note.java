@@ -49,6 +49,15 @@ public class Note {
         this.mDateChange = new Date();
         this.mId = uniqIdNote;
     }
+    public Note(Integer uniqIdNote, String theme, String description, Date dateCreate, Date dateChange, Date dateAlarm, Boolean favoriteState) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mFavoriteState = favoriteState;
+        this.mDateCreate = dateCreate;
+        this.mDateChange = dateChange;
+        this.mId = uniqIdNote;
+    }
 
     public Integer getId() {
         return mId;

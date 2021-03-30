@@ -1,4 +1,4 @@
-package com.e.notebook;
+package com.e.notebook.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import com.e.notebook.R;
+import com.e.notebook.Settings;
 
 import static android.content.Context.MODE_PRIVATE;
 

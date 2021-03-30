@@ -1,4 +1,4 @@
-package com.e.notebook;
+package com.e.notebook.fragment;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,11 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.e.notebook.model.ListNote;
-import com.e.notebook.model.Note;
+import com.e.notebook.R;
 
-import static com.e.notebook.NoteDetailsFragment.CHOSEN_DATE;
-import static com.e.notebook.NoteDetailsFragment.CHOSEN_FIELD_NAME;
+import static com.e.notebook.fragment.NoteDetailsFragment.CHOSEN_DATE;
+import static com.e.notebook.fragment.NoteDetailsFragment.CHOSEN_FIELD_NAME;
 import static com.e.notebook.service.Common.formatDateString;
 import static com.e.notebook.service.Common.formatStringToDate;
 

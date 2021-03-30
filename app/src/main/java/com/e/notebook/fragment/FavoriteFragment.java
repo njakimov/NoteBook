@@ -1,4 +1,4 @@
-package com.e.notebook;
+package com.e.notebook.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.e.notebook.R;
+import com.e.notebook.adapter.NotesRecyclerViewAdapter;
 import com.e.notebook.model.ListNote;
 
 public class FavoriteFragment extends Fragment {

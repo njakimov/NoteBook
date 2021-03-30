@@ -3,13 +3,15 @@ package com.e.notebook;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +22,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.e.notebook.fragment.FavoriteFragment;
+import com.e.notebook.fragment.NoteDetailsFragment;
+import com.e.notebook.fragment.NotesFragment;
+import com.e.notebook.fragment.SettingsFragment;
 import com.e.notebook.model.ListNote;
+import com.e.notebook.service.DbHelper;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
+
+import static com.e.notebook.service.Common.formatStringToDate;
 
 // Подумайте о функционале вашего приложения заметок. Какие экраны там могут быть, помимо
 //основного со списком заметок? Как можно использовать меню и всплывающее меню в вашем
@@ -59,12 +68,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNote() {
-        notes = ListNote.getInstance();
-        if (notes.size() == 0) {
-            notes.addNote("Тема 1", "описание 1");
-            notes.addNote("Тема 2", "описание 2");
-            notes.addNote("Тема 3", "описание 3");
+        DbHelper dbHelper = new DbHelper(getApplicationContext(), "notes", null, 1);
+        SQLiteDatabase db;
+        try {
+            db = dbHelper.getWritableDatabase();
+        } catch (SQLiteException ex) {
+            db = dbHelper.getReadableDatabase();
         }
+        Cursor c = db.rawQuery("select * from notes", null);
+        notes = ListNote.getInstance();
+        if (c.moveToFirst()) {
+            do {
+                boolean favoriteState = false;
+                if(c.getInt(6)==1) {
+                    favoriteState = true;
+                }
+                notes.addNote(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getString(2),
+                        formatStringToDate(c.getString(3)),
+                        formatStringToDate(c.getString(4)),
+                        formatStringToDate(c.getString(5)),
+                        favoriteState
+                );
+            } while (c.moveToNext());
+        }
+
+
+//            if (notes.size() == 0) {
+//                notes.addNote("Тема 1", "описание 1");
+//                notes.addNote("Тема 2", "описание 2");
+//                notes.addNote("Тема 3", "описание 3");
+//            }
     }
 
     private void initView() {
@@ -184,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 // Здесь определяем меню приложения (активити)
@@ -197,10 +231,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
-                if(findViewById(R.id.list)!=null) {
+                if (findViewById(R.id.list) != null) {
                     addFragment(new NotesFragment());
-                } else if(findViewById(R.id.listFavorite)!=null) {
-                        addFragment(new FavoriteFragment());
+                } else if (findViewById(R.id.listFavorite) != null) {
+                    addFragment(new FavoriteFragment());
                 }
                 return true;
             }

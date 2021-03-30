@@ -10,5 +10,5 @@
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".NotesFragment"
+        tools:context=".fragment.NotesFragment"
         tools:listitem="@layout/note"/>

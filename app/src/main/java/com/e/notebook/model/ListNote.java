@@ -38,10 +38,9 @@ public class ListNote {
         return uniqIdNote;
     }
 
-    public Integer addNote(String theme, String description, Date dateAlarm, Boolean favoriteState) {
-        uniqIdNote++;
-        mListNote.put(uniqIdNote, new Note(uniqIdNote, theme, description, dateAlarm, favoriteState));
-        return uniqIdNote;
+    public Integer addNote(Integer id, String theme, String description, Date dateCreate, Date dateChange, Date dateAlarm, Boolean favoriteState) {
+        mListNote.put(id, new Note(uniqIdNote, theme, description, dateCreate, dateChange, dateAlarm, favoriteState));
+        return id;
     }
 
     public Integer addNote(NoteToEdit note) {
