@@ -1,5 +1,8 @@
 package com.e.notebook.model;
 
+import android.database.sqlite.SQLiteDatabase;
+import com.e.notebook.service.DbHelper;
+
 import java.util.*;
 
 public class ListNote {
@@ -9,6 +12,7 @@ public class ListNote {
 
     private static Integer uniqIdNote = 0;                                                                              // уникальный ключ заметк
     private HashMap<Integer, Note> mListNote;                                                                           // список заметок
+    private DbHelper dbHelper;
 
     public static ListNote getInstance() { // #3
         if (instance == null) {                                                                                         // если объект еще не создан
@@ -17,37 +21,36 @@ public class ListNote {
         return instance;                                                                                                // вернуть ранее созданный объект
     }
 
+    public void setDbHelper(DbHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     private ListNote() {
         this.mListNote = new HashMap<>();
     }
 
-    /**
-     * Добавить заметку
-     *
-     * @param description - описание заметки
-     */
-    public Integer addNote(String theme, String description) {
-        uniqIdNote++;
-        mListNote.put(uniqIdNote, new Note(uniqIdNote, theme, description));
-        return uniqIdNote;
+    public DbHelper getDbHelper() {
+        return dbHelper;
     }
 
-    public Integer addNote(String theme, String description, Date dateAlarm) {
+    public Integer addNote(Integer id, String theme, String description, Date dateAlarm) {
         uniqIdNote++;
-        mListNote.put(uniqIdNote, new Note(uniqIdNote, theme, description, dateAlarm));
+        mListNote.put(id, new Note(id, theme, description, dateAlarm));
         return uniqIdNote;
     }
 
     public Integer addNote(Integer id, String theme, String description, Date dateCreate, Date dateChange, Date dateAlarm, Boolean favoriteState) {
-        mListNote.put(id, new Note(uniqIdNote, theme, description, dateCreate, dateChange, dateAlarm, favoriteState));
+        mListNote.put(id, new Note(id, theme, description, dateCreate, dateChange, dateAlarm, favoriteState));
         return id;
     }
 
     public Integer addNote(NoteToEdit note) {
         Integer id = note.getId();
         if (this.mListNote.get(id) == null) {
-            this.addNote(note.getTheme(), note.getDescription(), note.getDateAlarm());
+            Integer newId = this.dbHelper.addNote(note);
+            this.addNote(newId, note.getTheme(), note.getDescription(), note.getDateAlarm());
         } else {
+            this.dbHelper.editNote(note, id);
             this.mListNote.get(id).editNote(note.getTheme(), note.getDescription(), note.getDateAlarm(), note.getFavoriteState());
         }
         return uniqIdNote;
@@ -72,24 +75,9 @@ public class ListNote {
         return mListNote.get(id);
     }
 
-    /**
-     * Изменить заметку
-     *
-     * @param id          - ключ заметки
-     * @param theme       - тема заметки
-     * @param description - описание заметки
-     */
-    public void editNote(Integer id, String theme, String description) {
-        if (this.mListNote.get(id) == null) {
-            this.addNote(theme, description);
-        } else {
-            this.mListNote.get(id).editNote(theme, description);
-        }
-    }
-
     public void setFavorite(Integer id, Boolean state) {
+        dbHelper.updateFavoriteNote(id, state);
         this.mListNote.get(id).setFavoriteState(state);
-
     }
 
     /**
@@ -129,6 +117,7 @@ public class ListNote {
     }
 
     public void removeNote(int currentIdNote) {
+        dbHelper.deleteNote(currentIdNote);
         mListNote.remove(currentIdNote);
     }
 
