@@ -34,4 +34,5 @@
     <string name="lblChange">Изменена:</string>
     <string name="Избранное">btnFavorite</string>
     <string name="hintDescription">Описание заметки</string>
+    <string name="listNote">Заметки</string>
 </resources>

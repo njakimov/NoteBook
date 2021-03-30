@@ -68,57 +68,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNote() {
-        DbHelper dbHelper = new DbHelper(getApplicationContext(), "notes", null, 1);
-        SQLiteDatabase db;
-        try {
-            db = dbHelper.getWritableDatabase();
-        } catch (SQLiteException ex) {
-            db = dbHelper.getReadableDatabase();
-        }
-        Cursor c = db.rawQuery("select * from notes", null);
         notes = ListNote.getInstance();
-        if (c.moveToFirst()) {
-            do {
-                boolean favoriteState = false;
-                if(c.getInt(6)==1) {
-                    favoriteState = true;
-                }
-                notes.addNote(
-                        c.getInt(0),
-                        c.getString(1),
-                        c.getString(2),
-                        formatStringToDate(c.getString(3)),
-                        formatStringToDate(c.getString(4)),
-                        formatStringToDate(c.getString(5)),
-                        favoriteState
-                );
-            } while (c.moveToNext());
+        if (notes.size() == 0) {
+            DbHelper dbHelper = new DbHelper(getApplicationContext(), "notes", null);
+            notes.setDbHelper(dbHelper);
+            dbHelper.getNotes();
         }
-
-
-//            if (notes.size() == 0) {
-//                notes.addNote("Тема 1", "описание 1");
-//                notes.addNote("Тема 2", "описание 2");
-//                notes.addNote("Тема 3", "описание 3");
-//            }
     }
 
     private void initView() {
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
-        initButtonMain();
-        initButtonFavorite();
-        initButtonSettings();
-        initButtonBack();
+//        initButtonMain();
+//        initButtonFavorite();
+//        initButtonSettings();
+//        initButtonBack();
         initTopMenu();
     }
 
     private void initTopMenu() {
-//        FrameLayout noteDetails = findViewById(R.id.noteDetailsContainer);
-//        if(noteDetails!=null) {
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT, weight);
-//            noteDetails.setLayoutParams(params);
-//        }
+        FrameLayout noteDetails = findViewById(R.id.noteDetailsContainer);
+        if (noteDetails != null) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, FrameLayout.LayoutParams.MATCH_PARENT, 1);
+            noteDetails.setLayoutParams(params);
+        }
     }
 
     private Toolbar initToolbar() {
@@ -144,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
                 setWeightFragmentNoteDetails(0f);
                 return true;
             case R.id.action_main:
+                addFragment(new NotesFragment());
+                setWeightFragmentNoteDetails(1f);
+                Toast.makeText(getApplicationContext(), "Заметки", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_add:
                 addFragment(new NotesFragment());
                 setWeightFragmentNoteDetails(1f);
                 Toast.makeText(getApplicationContext(), "Добавить заметку", Toast.LENGTH_SHORT).show();
@@ -207,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (Settings.isAddFragment) {                                                                                   // Добавить фрагмент
-            fragmentTransaction.add(R.id.fragment_container, fragment);
-        } else {
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-        }
+//        if (Settings.isAddFragment) {                                                                                   // Добавить фрагмент
+//            fragmentTransaction.add(R.id.fragment_container, fragment);
+//        } else {
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+//        }
 
         if (Settings.isBackStack) {                                                                                     // Добавить транзакцию в бэкстек
             fragmentTransaction.addToBackStack(null);
@@ -249,47 +227,46 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void initButtonSettings() {
-        Button buttonSettings = findViewById(R.id.buttonSettings);
-        buttonSettings.setOnClickListener(v -> {
-            addFragment(new SettingsFragment());
-            setWeightFragmentNoteDetails(0f);
-        });
-
-    }
-
-    private void initButtonFavorite() {
-        Button buttonFavorite = findViewById(R.id.buttonFavorite);
-        buttonFavorite.setOnClickListener(v -> {
-            addFragment(new FavoriteFragment());
-            setWeightFragmentNoteDetails(0f);
-        });
-
-    }
-
-    private void initButtonMain() {
-        Button buttonMain = findViewById(R.id.buttonMain);
-        buttonMain.setOnClickListener(v -> {
-            addFragment(new NotesFragment());
-            setWeightFragmentNoteDetails(1f);
-        });
-
-    }
-
-    private void initButtonBack() {
-        Button buttonBack = findViewById(R.id.buttonBack);
-        buttonBack.setOnClickListener(v -> {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            if (Settings.isBackAsRemove) {
-                Fragment fragment = getVisibleFragment(fragmentManager);
-                if (fragment != null) {
-                    fragmentManager.beginTransaction().remove(fragment).commit();
-                }
-            } else {
-                fragmentManager.popBackStack();
-            }
-        });
-    }
+//    private void initButtonSettings() {
+//        Button buttonSettings = findViewById(R.id.buttonSettings);
+//        buttonSettings.setOnClickListener(v -> {
+//            addFragment(new SettingsFragment());
+//            setWeightFragmentNoteDetails(0f);
+//        });
+//    }
+//
+//    private void initButtonFavorite() {
+//        Button buttonFavorite = findViewById(R.id.buttonFavorite);
+//        buttonFavorite.setOnClickListener(v -> {
+//            addFragment(new FavoriteFragment());
+//            setWeightFragmentNoteDetails(0f);
+//        });
+//
+//    }
+//
+//    private void initButtonMain() {
+//        Button buttonMain = findViewById(R.id.buttonMain);
+//        buttonMain.setOnClickListener(v -> {
+//            addFragment(new NotesFragment());
+//            setWeightFragmentNoteDetails(1f);
+//        });
+//
+//    }
+//
+//    private void initButtonBack() {
+//        Button buttonBack = findViewById(R.id.buttonBack);
+//        buttonBack.setOnClickListener(v -> {
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            if (Settings.isBackAsRemove) {
+//                Fragment fragment = getVisibleFragment(fragmentManager);
+//                if (fragment != null) {
+//                    fragmentManager.beginTransaction().remove(fragment).commit();
+//                }
+//            } else {
+//                fragmentManager.popBackStack();
+//            }
+//        });
+//    }
 
     // Чтение настроек
     private void readSettings() {

@@ -25,6 +25,21 @@ public class Common {
     }
 
     /**
+     * Преобразование даты в строку нужного формата
+     *
+     * @param date - дата
+     * @return - строка
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String formatDateTimeToStringDb(Date date) {
+        String temp = "";
+        if (date != null) {
+            temp = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).format(date);
+        }
+        return temp;
+    }
+
+    /**
      * Преобразование строки в дату
      *
      * @param year  - год

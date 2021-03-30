@@ -2,6 +2,7 @@ package com.e.notebook.fragment;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.e.notebook.MainActivity;
 import com.e.notebook.R;
 import com.e.notebook.model.ListNote;
 import com.e.notebook.model.NoteToEdit;
+import com.e.notebook.service.DbHelper;
 
 import static com.e.notebook.fragment.DataPickerFragment.FILED_NAME;
 import static com.e.notebook.fragment.DataPickerFragment._ID;
