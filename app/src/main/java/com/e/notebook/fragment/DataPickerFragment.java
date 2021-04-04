@@ -1,19 +1,20 @@
-package com.e.notebook;
+package com.e.notebook.fragment;
 
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.e.notebook.model.ListNote;
-import com.e.notebook.model.Note;
+import com.e.notebook.R;
 
-import java.util.Date;
-
+import static com.e.notebook.fragment.NoteDetailsFragment.CHOSEN_DATE;
+import static com.e.notebook.fragment.NoteDetailsFragment.CHOSEN_FIELD_NAME;
+import static com.e.notebook.service.Common.formatDateString;
 import static com.e.notebook.service.Common.formatStringToDate;
 
 /**
@@ -33,6 +34,7 @@ public class DataPickerFragment extends Fragment {
     private String fieldName;
 
     DatePicker mDatePicker;
+    TimePicker mTimePicker;
 
     public static final String ID_NOTE = "idNote";
     private Integer idNote;
@@ -75,21 +77,21 @@ public class DataPickerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mDatePicker = view.findViewById(R.id.datePicker);
+        mTimePicker = view.findViewById(R.id.timePicker);
+
+
         Button btnDataPicker = view.findViewById(R.id.btnDataPickerDone);
         btnDataPicker.setOnClickListener((View v) -> {
-            Note note = ListNote.getInstance().getNote(id);
-            if (fieldName.equals("mDataAlarm")) {
-                note.setDateAlarm(formatStringToDate(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth()));
-            }
-
             NoteDetailsFragment details = new NoteDetailsFragment();
             Bundle args = new Bundle();
             args.putInt(ID_NOTE, id);
+            args.putString(CHOSEN_FIELD_NAME, fieldName);
+            args.putString(CHOSEN_DATE, formatDateString(mDatePicker.getYear(), mDatePicker.getMonth(), mDatePicker.getDayOfMonth(), mTimePicker.getHour(), mTimePicker.getMinute()));
             details.setArguments(args);
             // Добавим фрагмент на activity
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.nodeDetailsContainer, details)
+                    .replace(R.id.noteDetailsContainer, details)
                     .commit();
         });
     }

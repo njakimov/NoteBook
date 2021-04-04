@@ -1,35 +1,59 @@
 package com.e.notebook.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.database.sqlite.SQLiteDatabase;
+import com.e.notebook.service.DbHelper;
+
+import java.util.*;
 
 public class ListNote {
     private static ListNote instance;
 
-    private static Integer uniqIdNote = -1;                                                                              // уникальный ключ заметк
-    private HashMap<Integer, Note> mListNote;                                                                           // список заметок
+    private String mTxtSearch = "";                                                                                     // строка поиска
 
-    public static ListNote getInstance(){ // #3
-        if(instance == null){		//если объект еще не создан
-            instance = new ListNote();	//создать новый объект
+    private static Integer uniqIdNote = 0;                                                                              // уникальный ключ заметк
+    private HashMap<Integer, Note> mListNote;                                                                           // список заметок
+    private DbHelper dbHelper;
+
+    public static ListNote getInstance() { // #3
+        if (instance == null) {                                                                                         // если объект еще не создан
+            instance = new ListNote();                                                                                  // создать новый объект
         }
-        return instance;		// вернуть ранее созданный объект
+        return instance;                                                                                                // вернуть ранее созданный объект
+    }
+
+    public void setDbHelper(DbHelper dbHelper) {
+        this.dbHelper = dbHelper;
     }
 
     private ListNote() {
         this.mListNote = new HashMap<>();
     }
 
-    /**
-     * Добавить заметку
-     *
-     * @param description - описание заметки
-     */
-    public void addNote(String theme, String description) {
+    public DbHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    public Integer addNote(Integer id, String theme, String description, Date dateAlarm) {
         uniqIdNote++;
-        mListNote.put(uniqIdNote, new Note(uniqIdNote, theme, description));
+        mListNote.put(id, new Note(id, theme, description, dateAlarm));
+        return uniqIdNote;
+    }
+
+    public Integer addNote(Integer id, String theme, String description, Date dateCreate, Date dateChange, Date dateAlarm, Boolean favoriteState) {
+        mListNote.put(id, new Note(id, theme, description, dateCreate, dateChange, dateAlarm, favoriteState));
+        return id;
+    }
+
+    public Integer addNote(NoteToEdit note) {
+        Integer id = note.getId();
+        if (this.mListNote.get(id) == null) {
+            Integer newId = this.dbHelper.addNote(note);
+            this.addNote(newId, note.getTheme(), note.getDescription(), note.getDateAlarm());
+        } else {
+            this.dbHelper.editNote(note, id);
+            this.mListNote.get(id).editNote(note.getTheme(), note.getDescription(), note.getDateAlarm(), note.getFavoriteState());
+        }
+        return uniqIdNote;
     }
 
     /**
@@ -51,19 +75,9 @@ public class ListNote {
         return mListNote.get(id);
     }
 
-    /**
-     * Изменить заметку
-     *
-     * @param id          - ключ заметки
-     * @param theme       - тема заметки
-     * @param description - описание заметки
-     */
-    public void editNote(Integer id, String theme, String description) {
-        if (this.mListNote.get(id) == null) {
-            this.addNote(theme, description);
-        } else {
-            this.mListNote.get(id).editNote(theme, description);
-        }
+    public void setFavorite(Integer id, Boolean state) {
+        dbHelper.updateFavoriteNote(id, state);
+        this.mListNote.get(id).setFavoriteState(state);
     }
 
     /**
@@ -71,13 +85,47 @@ public class ListNote {
      *
      * @return список заметок
      */
-    public HashMap<Integer, Note> getmListNote() {
+    public HashMap<Integer, Note> getListNote() {
         return mListNote;
     }
 
     public List<Note> toListNode() {
         List<Note> temp = new ArrayList<>();
-        for (Map.Entry<Integer, Note> entry : mListNote.entrySet()) temp.add(entry.getValue());
+        for (Map.Entry<Integer, Note> entry : mListNote.entrySet()) {
+            if (mTxtSearch.equals("") ||
+                    entry.getValue().getDescription().indexOf(mTxtSearch) > 0 ||
+                    entry.getValue().getTheme().indexOf(mTxtSearch) > 0
+            )
+                temp.add(entry.getValue());
+        }
         return temp;
+    }
+
+    public List<Note> toListNodeFavorite() {
+        List<Note> temp = new ArrayList<>();
+        for (Map.Entry<Integer, Note> entry : mListNote.entrySet()) {
+            if (entry.getValue().getFavoriteState() &&
+                    (mTxtSearch.equals("") ||
+                            entry.getValue().getDescription().indexOf(mTxtSearch) > 0 ||
+                            entry.getValue().getTheme().indexOf(mTxtSearch) > 0
+                    )
+            ) {
+                temp.add(entry.getValue());
+            }
+        }
+        return temp;
+    }
+
+    public void removeNote(int currentIdNote) {
+        dbHelper.deleteNote(currentIdNote);
+        mListNote.remove(currentIdNote);
+    }
+
+    public String getTxtSearch() {
+        return mTxtSearch;
+    }
+
+    public void setTxtSearch(String mTxtSearch) {
+        this.mTxtSearch = mTxtSearch;
     }
 }
