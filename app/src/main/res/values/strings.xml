@@ -35,4 +35,8 @@
     <string name="Избранное">btnFavorite</string>
     <string name="hintDescription">Описание заметки</string>
     <string name="listNote">Заметки</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="acceptDeleteTitle">Подтверждение удаления заметки</string>
+    <string name="acceptDeleteMessage">Удалить заметку?</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.e.notebook.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.view.Menu;
@@ -167,12 +169,40 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
                     return true;
                 case 3:
                     Toast.makeText(parentFragment.getContext(), "Удалить", Toast.LENGTH_SHORT).show();
-                    removeNote(currentIdNote);
+//                    removeNote(currentIdNote);
+                    createWarningModal();
                     return true;
             }
             return true;
         });
         popupMenu.show();
+    }
+
+    private void createWarningModal() {
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(parentFragment.getContext());                         // Создаём билдер и передаём контекст приложения
+
+            builder.setTitle(R.string.acceptDeleteTitle)                                                                     // В билдере указываем заголовок окна. Можно указывать как ресурс, так и строку
+                    .setMessage(R.string.acceptDeleteMessage)                                                                  // Указываем сообщение в окне. Также есть вариант со строковым параметром
+                    .setIcon(R.mipmap.ic_launcher_round)                                                                // Можно указать и пиктограмму
+                    .setCancelable(false)                                                                               // Из этого окна нельзя выйти кнопкой Back
+                    .setNegativeButton(R.string.no,                                                                      // Устанавливаем отрицательную кнопку. Ставим слушатель, будем обрабатывать нажатие
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Toast.makeText(parentFragment.getContext(), "Удаление отменено!", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    .setPositiveButton(R.string.yes,                                                                 // Устанавливаем кнопку. Название кнопки также можно задавать строкой
+                            new DialogInterface.OnClickListener() {                                                     // Ставим слушатель, нажатие будем обрабатывать
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Toast.makeText(parentFragment.getContext(), "Удаление подтверждено", Toast.LENGTH_SHORT).show();
+                                    removeNote(currentIdNote);
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            Toast.makeText(parentFragment.getContext(), "Диалог открыт", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void removeNote(int currentIdNote) {
