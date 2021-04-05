@@ -3,4 +3,8 @@
     <dimen name="text_margin">0dp</dimen>
     <dimen name="text_padding">6dp</dimen>
     <dimen name="noteRowMarginBottob">1dp</dimen>
+    <dimen name="fragment_dimen">12sp</dimen>
+    <dimen name="settings_dimen">12sp</dimen>
+    <dimen name="nav_header_height">200dp</dimen>
+    <dimen name="nav_header_dimen">42sp</dimen>
 </resources>

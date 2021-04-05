@@ -1,37 +1,36 @@
-package com.e.notebook;
+package com.e.notebook.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.e.notebook.R;
+import com.e.notebook.adapter.NotesRecyclerViewAdapter;
 import com.e.notebook.model.ListNote;
 
-/**
- * A fragment representing a list of Items.
- */
-public class NotesFragment extends Fragment {
+public class FavoriteFragment extends Fragment {
 
-
-    private static final String ARG_COLUMN_COUNT = "column-count";
+    private static final String ARG_COLUMN_COUNT = "column-count1";
 
     private int mColumnCount = 1;
+    private NotesRecyclerViewAdapter resAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public NotesFragment() {
+    public FavoriteFragment() {
     }
 
-
     @SuppressWarnings("unused")
-    public static NotesFragment newInstance(int columnCount) {
-        NotesFragment fragment = new NotesFragment();
+    public static FavoriteFragment newInstance(int columnCount) {
+        FavoriteFragment fragment = new FavoriteFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -48,10 +47,18 @@ public class NotesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.node_list, container, false);
+    public void onResume() {
+        super.onResume();
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup
+            container, @Nullable Bundle savedInstanceState) {
+
+
+
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         ListNote notes = ListNote.getInstance();
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -62,9 +69,9 @@ public class NotesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new NotesRecyclerViewAdapter(notes.toListNode(), this));
+            resAdapter = new NotesRecyclerViewAdapter(notes.toListNodeFavorite(), this);
+            recyclerView.setAdapter(resAdapter);
         }
         return view;
     }
-
 }

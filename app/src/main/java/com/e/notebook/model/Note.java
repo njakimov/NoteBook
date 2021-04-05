@@ -10,15 +10,52 @@ public class Note {
     private Integer mId = 0;                                                                                            // ключ заметки
     private String mTheme;                                                                                              // тема заметки / название
     private String mDescription;                                                                                        // описание заметки
-    private final Date mDateCreate;                                                                                     // дата создания заметки
+    private Date mDateCreate;                                                                                           // дата создания заметки
     private Date mDateChange;                                                                                           // дата изменения заметки
     private Date mDateAlarm;                                                                                            // дата напоминания
+    private Boolean mFavoriteState = false;                                                                              // флаг избранных сообщений
+
+    public Boolean getFavoriteState() {
+        return mFavoriteState;
+    }
+
+    public void setFavoriteState(Boolean favoriteState) {
+        this.mFavoriteState = favoriteState;
+    }
 
     public Note(Integer uniqIdNote, String theme, String description) {
         this.mTheme = theme;
         this.mDescription = description;
         this.mDateCreate = new Date();
         this.mDateChange = new Date();
+        this.mId = uniqIdNote;
+    }
+
+    public Note(Integer uniqIdNote, String theme, String description, Date dateAlarm) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mDateCreate = new Date();
+        this.mDateChange = new Date();
+        this.mId = uniqIdNote;
+    }
+
+    public Note(Integer uniqIdNote, String theme, String description, Date dateAlarm, Boolean favoriteState) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mFavoriteState = favoriteState;
+        this.mDateCreate = new Date();
+        this.mDateChange = new Date();
+        this.mId = uniqIdNote;
+    }
+    public Note(Integer uniqIdNote, String theme, String description, Date dateCreate, Date dateChange, Date dateAlarm, Boolean favoriteState) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mFavoriteState = favoriteState;
+        this.mDateCreate = dateCreate;
+        this.mDateChange = dateChange;
         this.mId = uniqIdNote;
     }
 
@@ -52,9 +89,24 @@ public class Note {
         return mDateChange;
     }
 
-    public void editNote (String theme, String description) {
+    public void editNote(String theme, String description) {
         this.mTheme = theme;
         this.mDescription = description;
+        this.mDateChange = new Date();
+    }
+
+    public void editNote(String theme, String description, Date dateAlarm) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mDateChange = new Date();
+    }
+
+    public void editNote(String theme, String description, Date dateAlarm, Boolean favoriteState) {
+        this.mTheme = theme;
+        this.mDescription = description;
+        this.mDateAlarm = dateAlarm;
+        this.mFavoriteState = favoriteState;
         this.mDateChange = new Date();
     }
 
@@ -66,4 +118,18 @@ public class Note {
         this.mDateAlarm = mDateAlarm;
     }
 
+    public void setNote(Note note) {
+        this.mTheme = note.getTheme();
+        this.mDescription = note.getDescription();
+        this.mDateCreate = note.getDateCreate();
+        this.mDateChange = note.getDateChange();
+        this.mFavoriteState = note.getFavoriteState();
+        this.mId = note.getId();
+    }
+
+    public void newNote() {
+        this.mDateCreate = new Date();
+        this.mDateChange = new Date();
+        this.mId = -1;
+    }
 }

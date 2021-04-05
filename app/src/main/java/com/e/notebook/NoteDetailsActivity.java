@@ -3,6 +3,7 @@ package com.e.notebook;
 import android.content.res.Configuration;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.e.notebook.fragment.NoteDetailsFragment;
 
 public class NoteDetailsActivity extends AppCompatActivity {
 
@@ -18,16 +19,12 @@ public class NoteDetailsActivity extends AppCompatActivity {
             return;
         }
         if (savedInstanceState == null) {
-
-            // Если эта activity запускается первый раз (с каждым новым гербом первый раз),
-            // то перенаправим параметр фрагменту
             NoteDetailsFragment details = new NoteDetailsFragment();
             details.setArguments(getIntent().getExtras());
 
-            // Добавим фрагмент на activity
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.nodeDetailsContainer, details)
+                    .replace(R.id.noteDetailsContainer, details)
                     .commit();
         }
     }
